@@ -12,10 +12,11 @@ public class WordFrequencyGame {
     public static final String SPLIT_REGEX = "\\s+";
     public static final String DELIMITER = "\n";
     public static final String CALCULATE_ERROR = "Calculate Error";
+    public static final int DEFAULT_COUNT = 1;
 
     public String getResult(String inputStr) {
-        if (inputStr.split(SPLIT_REGEX).length == 1) {
-            return inputStr + " 1";
+        if (inputStr.split(SPLIT_REGEX).length == DEFAULT_COUNT) {
+            return inputStr + " " + DEFAULT_COUNT;
         }
         try {
             //split the input string with 1 to n pieces of spaces
@@ -23,7 +24,7 @@ public class WordFrequencyGame {
 
             List<Input> inputList = new ArrayList<>();
             for (String word : words) {
-                Input input = new Input(word, 1);
+                Input input = new Input(word, DEFAULT_COUNT);
                 inputList.add(input);
             }
 
