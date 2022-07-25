@@ -1,8 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.util.*;
 import java.io.CharArrayWriter;
 
 import java.time.LocalDateTime;
@@ -22,29 +18,43 @@ public class WordFrequencyGame {
             //split the input string with 1 to n pieces of spaces
             String[] words = inputStr.split(SPLIT_REGEX);
 
-            List<Input> inputList = new ArrayList<>();
-            for (String word : words) {
-                inputList.add(new Input(word, DEFAULT_COUNT));
-            }
+            List<Input> inputList = getInputList(words);
 
             //get the map for the next step of sizing the same word
             Map<String, List<Input>> countMap = getListMap(inputList);
 
-            List<Input> countList = new ArrayList<>();
-            for (Map.Entry<String, List<Input>> entry : countMap.entrySet()) {
-                countList.add(new Input(entry.getKey(), entry.getValue().size()));
-            }
+            List<Input> countList = getCountList(countMap);
             inputList = countList;
             inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
-            StringJoiner joiner = new StringJoiner(DELIMITER);
-            for (Input word : inputList) {
-                joiner.add(word.getValue() + " " + word.getWordCount());
-            }
-            return joiner.toString();
+            return buildResultString(inputList);
         } catch (Exception e) {
             return CALCULATE_ERROR;
         }
+    }
+
+    private String buildResultString(List<Input> inputList) {
+        StringJoiner joiner = new StringJoiner(DELIMITER);
+        for (Input word : inputList) {
+            joiner.add(word.getValue() + " " + word.getWordCount());
+        }
+        return joiner.toString();
+    }
+
+    private List<Input> getCountList(Map<String, List<Input>> countMap) {
+        List<Input> countList = new ArrayList<>();
+        for (Map.Entry<String, List<Input>> entry : countMap.entrySet()) {
+            countList.add(new Input(entry.getKey(), entry.getValue().size()));
+        }
+        return countList;
+    }
+
+    private List<Input> getInputList(String[] words) {
+        List<Input> inputList = new ArrayList<>();
+        for (String word : words) {
+            inputList.add(new Input(word, DEFAULT_COUNT));
+        }
+        return inputList;
     }
 
 
