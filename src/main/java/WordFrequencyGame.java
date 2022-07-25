@@ -24,8 +24,7 @@ public class WordFrequencyGame {
 
             List<Input> inputList = new ArrayList<>();
             for (String word : words) {
-                Input input = new Input(word, DEFAULT_COUNT);
-                inputList.add(input);
+                inputList.add(new Input(word, DEFAULT_COUNT));
             }
 
             //get the map for the next step of sizing the same word
@@ -33,16 +32,14 @@ public class WordFrequencyGame {
 
             List<Input> countList = new ArrayList<>();
             for (Map.Entry<String, List<Input>> entry : countMap.entrySet()) {
-                Input input = new Input(entry.getKey(), entry.getValue().size());
-                countList.add(input);
+                countList.add(new Input(entry.getKey(), entry.getValue().size()));
             }
             inputList = countList;
             inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
             StringJoiner joiner = new StringJoiner(DELIMITER);
             for (Input word : inputList) {
-                String countResult = word.getValue() + " " + word.getWordCount();
-                joiner.add(countResult);
+                joiner.add(word.getValue() + " " + word.getWordCount());
             }
             return joiner.toString();
         } catch (Exception e) {
