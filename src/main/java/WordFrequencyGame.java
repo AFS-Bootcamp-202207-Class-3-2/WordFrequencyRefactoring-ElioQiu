@@ -19,7 +19,7 @@ public class WordFrequencyGame {
             Map<String, List<Input>> countMap = getListMap(inputList);
 
             inputList = getCountList(countMap);
-            inputList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
+            inputList.sort((firstWord, secondWord) -> secondWord.getWordCount() - firstWord.getWordCount());
 
             return buildResultString(inputList);
         } catch (Exception e) {
