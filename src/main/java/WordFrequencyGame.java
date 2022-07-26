@@ -8,17 +8,10 @@ public class WordFrequencyGame {
     public static final int DEFAULT_COUNT = 1;
 
     public String getResult(String inputStr) {
-        if (inputStr.split(SPLIT_REGEX).length == DEFAULT_COUNT) {
-            return inputStr + " " + DEFAULT_COUNT;
-        }
         try {
-            //split the input string with 1 to n pieces of spaces
-            List<Input> inputList = getInputList(inputStr);
+            List<Input> inputList = formatInputList(inputStr);
 
-            //get the map for the next step of sizing the same word
-            Map<String, List<Input>> countMap = getListMap(inputList);
-
-            inputList = getCountList(countMap);
+            inputList = getCountList(inputList);
             inputList.sort((firstWord, secondWord) -> secondWord.getWordCount() - firstWord.getWordCount());
 
             return buildResultString(inputList);
@@ -35,13 +28,17 @@ public class WordFrequencyGame {
         return joiner.toString();
     }
 
-    private List<Input> getCountList(Map<String, List<Input>> countMap) {
+    private List<Input> getCountList(List<Input> inputList) {
+        Map<String, List<Input>> countMap = new HashMap<>();
+        inputList.forEach(input -> {
+            countMap.computeIfAbsent(input.getValue(), k -> new ArrayList<>()).add(input);
+        });
         List<Input> countList = new ArrayList<>();
         countMap.forEach((key, value) -> countList.add(new Input(key, value.size())));
         return countList;
     }
 
-    private List<Input> getInputList(String inputStr) {
+    private List<Input> formatInputList(String inputStr) {
         String[] words = inputStr.split(SPLIT_REGEX);
         List<Input> inputList = new ArrayList<>();
         Arrays.stream(words).forEach(word ->{
@@ -50,12 +47,4 @@ public class WordFrequencyGame {
         return inputList;
     }
 
-
-    private Map<String, List<Input>> getListMap(List<Input> inputList) {
-        Map<String, List<Input>> countMap = new HashMap<>();
-        inputList.forEach(input -> {
-            countMap.computeIfAbsent(input.getValue(), k -> new ArrayList<>()).add(input);
-        });
-        return countMap;
-    }
 }
